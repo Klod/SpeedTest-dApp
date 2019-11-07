@@ -184,7 +184,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 94,
+                        "referencedDeclaration": 148,
                         "src": "146:3:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -288,7 +288,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 94,
+                        "referencedDeclaration": 148,
                         "src": "212:3:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -830,7 +830,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 94,
+                        "referencedDeclaration": 148,
                         "src": "146:3:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -934,7 +934,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 94,
+                        "referencedDeclaration": 148,
                         "src": "212:3:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -1373,10 +1373,16 @@
       "links": {},
       "address": "0xb80dC175d720E2e146C28700dFD7B5867c846014",
       "transactionHash": "0x3265d733c4b01eefead0ecd1fff50d6ed4d8fb76a6ee892cea3283eee394d589"
+    },
+    "1573158719814": {
+      "events": {},
+      "links": {},
+      "address": "0x45368D410f8e8ADe81545103695bab45C52BEB70",
+      "transactionHash": "0xc2e4d3f2ea9b69c338b22e3f9e20d7b2b0add8e985d1c0ac8fb391cdd7e148a0"
     }
   },
   "schemaVersion": "3.0.17",
-  "updatedAt": "2019-11-07T19:04:55.366Z",
+  "updatedAt": "2019-11-07T22:06:43.086Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}

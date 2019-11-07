@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import SimpleStorageContract from "./contracts/SimpleStorage.json";
+import SimpleStorage from "./contracts/SimpleStorage";
 import getWeb3 from "./utils/getWeb3";
 import Web3 from 'web3'
 import "./App.css";
@@ -55,16 +55,18 @@ class App extends Component {
   else {
     App.web3Provider = new Web3.providers.HttpProvider('https://nice-pug-99.localtunnel.me');
   }
-  web3 = new Web3(App.web3Provider);
-      const networkId = await web3.eth.net.getId();
-      const deployedNetwork = SimpleStorageContract.networks[networkId];
-      const instance = new web3.eth.Contract(
-        SimpleStorageContract.abi,
+    web3 = new Web3(App.web3Provider);
+    const networkId = await web3.eth.net.getId();
+    const deployedNetwork = SimpleStorage.networks[networkId];
+    console.log(SimpleStorage)
+    console.log(networkId)
+    const instance = new web3.eth.Contract(
+        SimpleStorage.abi,
         deployedNetwork && deployedNetwork.address,
       );
-      const accounts = await web3.eth.getAccounts();
-      console.log(web3)
-      this.setState({ web3, accounts, contract: instance }, this.runExample);
+    const accounts = await web3.eth.getAccounts();
+
+    this.setState({ web3, accounts, contract: instance }, this.runExample);
     
   };
 
@@ -72,7 +74,7 @@ class App extends Component {
     const { accounts, contract } = this.state;
 
     // Stores a given value, 5 by default.
-    await contract.methods.set(5).send({ from: accounts[0] });
+    await contract.methods.set(4).send({ from: accounts[0] });
 
     // Get the value from the contract to prove it worked.
     const response = await contract.methods.get().call();
@@ -92,7 +94,7 @@ class App extends Component {
         <h2>Smart Contract Example</h2>
         <p>
           If your contracts compiled and migrated successfully, below will show
-          a stored value of 5 (by default).
+          a stored value of 5 (by default) but Karl changed it to =4.
         </p>
         <p>
           Try changing the value stored on <strong>line 40</strong> of App.js.
