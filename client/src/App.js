@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import getWeb3 from "./utils/getWeb3";
 import Web3 from 'web3'
-
 import "./App.css";
-let web3 
+let web3
+
 class App extends Component {
   state = { storageValue: 0, web3: null, accounts: null, contract: null };
 
@@ -13,22 +13,22 @@ class App extends Component {
     //   // Get network provider and web3 instance.
     //   const web3 = await getWeb3();
 
-    //   // Use web3 to get the user's accounts.
-    //   const accounts = await web3.eth.getAccounts();
+      // Use web3 to get the user's accounts.
+      // const accounts = await web3.eth.getAccounts();
 
-    //   // Get the contract instance.
-    //   const networkId = await web3.eth.net.getId();
-    //   const deployedNetwork = SimpleStorageContract.networks[networkId];
-    //   const instance = new web3.eth.Contract(
-    //     SimpleStorageContract.abi,
-    //     deployedNetwork && deployedNetwork.address,
-    //   );
+      // // Get the contract instance.
+      // const networkId = await web3.eth.net.getId();
+      // const deployedNetwork = SimpleStorageContract.networks[networkId];
+      // const instance = new web3.eth.Contract(
+      //   SimpleStorageContract.abi,
+      //   deployedNetwork && deployedNetwork.address,
+      // );
       
       
     //   // Set web3, accounts, and contract to the state, and then proceed with an
     //   // example of interacting with the contract's methods.
 
-    //   this.setState({ web3, accounts, contract: instance }, this.runExample);
+    // this.setState({ web3, accounts, contract: instance }, this.runExample);
     // } catch (error) {
     //   // Catch any errors for any of the above operations.
     //   alert(
@@ -36,25 +36,35 @@ class App extends Component {
     //   );
     //   console.error(error);
     // }
+    
     if (window.ethereum) {
-  App.web3Provider = window.ethereum;
-  try {
-    // Request account access
-    await window.ethereum.enable();
-  } catch (error) {
-    // User denied account access...
-    console.error("User denied account access")
+    App.web3Provider = window.ethereum;
+    try {
+      // Request account access
+      await window.ethereum.enable();
+    } catch (error) {
+      // User denied account access...
+      console.error("User denied account access")
+    }
   }
-}
 // Legacy dapp browsers...
-else if (window.web3) {
-  App.web3Provider = window.web3.currentProvider;
-}
-// If no injected web3 instance is detected, fall back to Ganache
-else {
-  App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
-}
-web3 = new Web3(App.web3Provider);
+  else if (window.web3) {
+    App.web3Provider = window.web3.currentProvider;
+  }
+  // If no injected web3 instance is detected, fall back to Ganache
+  else {
+    App.web3Provider = new Web3.providers.HttpProvider('https://nice-pug-99.localtunnel.me');
+  }
+  web3 = new Web3(App.web3Provider);
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = SimpleStorageContract.networks[networkId];
+      const instance = new web3.eth.Contract(
+        SimpleStorageContract.abi,
+        deployedNetwork && deployedNetwork.address,
+      );
+      const accounts = await web3.eth.getAccounts();
+      console.log(web3)
+      this.setState({ web3, accounts, contract: instance }, this.runExample);
     
   };
 
@@ -72,7 +82,7 @@ web3 = new Web3(App.web3Provider);
   };
 
   render() {
-    if (this.state.web3) {
+    if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
     return (
