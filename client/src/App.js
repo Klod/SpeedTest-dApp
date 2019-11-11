@@ -3,7 +3,9 @@ import SimpleStorage from "./contracts/SimpleStorage";
 import getWeb3 from "./utils/getWeb3";
 import Web3 from 'web3'
 import "./App.css";
+import Speedtest from './Speedtest.js'
 let web3
+
 
 class App extends Component {
   state = { storageValue: 0, web3: null, accounts: null, contract: null };
@@ -53,7 +55,7 @@ class App extends Component {
   }
   // If no injected web3 instance is detected, fall back to Ganache
   else {
-    App.web3Provider = new Web3.providers.HttpProvider('https://nice-pug-99.localtunnel.me');
+    App.web3Provider = new Web3.providers.HttpProvider('https://grumpy-turkey-40.localtunnel.me');
   }
     web3 = new Web3(App.web3Provider);
     const networkId = await web3.eth.net.getId();
@@ -89,12 +91,14 @@ class App extends Component {
     }
     return (
       <div className="App">
+      <Speedtest />
         <h1>Good to Go!</h1>
         <p>Your Truffle Box is installed and ready.</p>
         <h2>Smart Contract Example</h2>
         <p>
           If your contracts compiled and migrated successfully, below will show
           a stored value of 5 (by default) but Karl changed it to =4.
+        
         </p>
         <p>
           Try changing the value stored on <strong>line 40</strong> of App.js.
