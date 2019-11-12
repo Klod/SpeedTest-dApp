@@ -60,7 +60,7 @@ function MeasureConnectionSpeed(callback) {
         speedKbps + " kbps", 
         speedMbps + " Mbps"
         ]);
-        return speedBps
+        return Math.round(speedBps)
     }
 
 }

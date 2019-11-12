@@ -43,28 +43,31 @@ class App extends Component {
     
   };
 
-  setVal(speed){
+  
+  setVal = async(speed) => {
+    speed = Number(speed)
     let contract = this.state.contract;
     let accounts = this.state.accounts;
     contract.methods.set(speed).send({ from: accounts[0] });
+    const response = await contract.methods.get().call();
+    this.setState({ storageValue: response });
   }
 
-  runExample = async () => {
-    const { accounts, contract } = this.state;
+  // runExample = async () => {
+  //   const { accounts, contract } = this.state;
 
-    // Stores a given value, 5 by default.
-    //await contract.methods.set(4).send({ from: accounts[0] });
-    //await contract.methods.set("New Karl").send({ from: accounts[0] });
+  //   // Stores a given value, 5 by default.
+  //   //await contract.methods.set(40).send({ from: accounts[0] });
+  //   //await contract.methods.set("New Karl").send({ from: accounts[0] });
     
-    // Get the value from the contract to prove it worked.
-    const response = await contract.methods.get().call();
-    const device = await contract.methods.getName().call();
+  //   // Get the value from the contract to prove it worked.
+  //   const response = await contract.methods.get().call();
+  //   const device = await contract.methods.getName().call();
 
-    // Update state with the result.
-    this.setState({ storageValue: response });
-    this.setState({ deviceName: device });
-    console.log(this.setState)
-  };
+  //   // Update state with the result.
+  //   this.setState({ storageValue: response });
+  //   this.setState({ deviceName: device });
+  // };
   
   render() {
     if (!this.state.web3) {
@@ -73,7 +76,7 @@ class App extends Component {
     return (
       <div className="App">
       <Testrun />
-      <Speedtest onTest={(x) => {console.log(x);this.setVal(x)}} />
+      <Speedtest onTest={(z) => {this.setVal(z)}} />
         <h1>Good to Go!</h1>
         <p>Your Truffle Box is installed and ready.</p>
         <h2>Smart Contract Example</h2>
