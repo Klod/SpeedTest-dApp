@@ -4,64 +4,35 @@ import getWeb3 from "./utils/getWeb3";
 import Web3 from 'web3'
 import "./App.css";
 import Speedtest from './Speedtest.js'
+import  Testrun from './Testrun.js'
 let web3
 
 
 class App extends Component {
-  state = { storageValue: 0, web3: null, accounts: null, contract: null };
+  state = { deviceName: '', storageValue: 0, web3: null, accounts: null, contract: null };
 
   componentDidMount = async () => {
-    // try {
-    //   // Get network provider and web3 instance.
-    //   const web3 = await getWeb3();
-
-      // Use web3 to get the user's accounts.
-      // const accounts = await web3.eth.getAccounts();
-
-      // // Get the contract instance.
-      // const networkId = await web3.eth.net.getId();
-      // const deployedNetwork = SimpleStorageContract.networks[networkId];
-      // const instance = new web3.eth.Contract(
-      //   SimpleStorageContract.abi,
-      //   deployedNetwork && deployedNetwork.address,
-      // );
-      
-      
-    //   // Set web3, accounts, and contract to the state, and then proceed with an
-    //   // example of interacting with the contract's methods.
-
-    // this.setState({ web3, accounts, contract: instance }, this.runExample);
-    // } catch (error) {
-    //   // Catch any errors for any of the above operations.
-    //   alert(
-    //     `Failed to load web3, accounts, or contract. Check console for details.`,
-    //   );
-    //   console.error(error);
-    // }
-    
     if (window.ethereum) {
-    App.web3Provider = window.ethereum;
-    try {
-      // Request account access
-      await window.ethereum.enable();
-    } catch (error) {
-      // User denied account access...
-      console.error("User denied account access")
+      App.web3Provider = window.ethereum;
+      try {
+        // Request account access
+        await window.ethereum.enable();
+      } catch (error) {
+        // User denied account access...
+        console.error("User denied account access")
+      }
     }
-  }
-// Legacy dapp browsers...
-  else if (window.web3) {
-    App.web3Provider = window.web3.currentProvider;
-  }
-  // If no injected web3 instance is detected, fall back to Ganache
-  else {
-    App.web3Provider = new Web3.providers.HttpProvider('https://grumpy-turkey-40.localtunnel.me');
-  }
+    // Legacy dapp browsers...
+    else if (window.web3) {
+      App.web3Provider = window.web3.currentProvider;
+    }
+    // If no injected web3 instance is detected, fall back to Ganache
+    else {
+      App.web3Provider = new Web3.providers.HttpProvider('https://ugly-badger-93.localtunnel.me');
+    }
     web3 = new Web3(App.web3Provider);
     const networkId = await web3.eth.net.getId();
     const deployedNetwork = SimpleStorage.networks[networkId];
-    console.log(SimpleStorage)
-    console.log(networkId)
     const instance = new web3.eth.Contract(
         SimpleStorage.abi,
         deployedNetwork && deployedNetwork.address,
@@ -72,37 +43,45 @@ class App extends Component {
     
   };
 
+  setVal(speed){
+    let contract = this.state.contract;
+    let accounts = this.state.accounts;
+    contract.methods.set(speed).send({ from: accounts[0] });
+  }
+
   runExample = async () => {
     const { accounts, contract } = this.state;
 
     // Stores a given value, 5 by default.
-    await contract.methods.set(4).send({ from: accounts[0] });
-
+    //await contract.methods.set(4).send({ from: accounts[0] });
+    //await contract.methods.set("New Karl").send({ from: accounts[0] });
+    
     // Get the value from the contract to prove it worked.
     const response = await contract.methods.get().call();
+    const device = await contract.methods.getName().call();
 
     // Update state with the result.
     this.setState({ storageValue: response });
+    this.setState({ deviceName: device });
+    console.log(this.setState)
   };
-
+  
   render() {
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
     return (
       <div className="App">
-      <Speedtest />
+      <Testrun />
+      <Speedtest onTest={(x) => {console.log(x);this.setVal(x)}} />
         <h1>Good to Go!</h1>
         <p>Your Truffle Box is installed and ready.</p>
         <h2>Smart Contract Example</h2>
         <p>
           If your contracts compiled and migrated successfully, below will show
           a stored value of 5 (by default) but Karl changed it to =4.
-        
         </p>
-        <p>
-          Try changing the value stored on <strong>line 40</strong> of App.js.
-        </p>
+        <p>Then stored name is: {this.state.deviceName}</p>
         <div>The stored value is: {this.state.storageValue}</div>
       </div>
     );

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Testrun from './Testrun.js'
 
 var imageAddr = "https://cdn.macrumors.com/article-new/2013/03/speedtest.jpg"; 
 var downloadSize = 92000; //bytes
@@ -20,17 +20,25 @@ function ShowProgressMessage(msg) {
         oProgress.innerHTML = actualHTML;
     }
 }
-function InitiateSpeedDetection() {
-    ShowProgressMessage("Loading the image, please wait...");
-    window.setTimeout(MeasureConnectionSpeed, 1);
+function InitiateSpeedDetection(callback) {
+    
+        ShowProgressMessage("Loading the image, please wait...");
+        // window.setTimeout(MeasureConnectionSpeed, 1);
+        window.setTimeout(function() {
+            MeasureConnectionSpeed(callback)
+     },1);
+ 
+
+    
 }; 
 
-function MeasureConnectionSpeed() {
+function MeasureConnectionSpeed(callback) {
     var startTime, endTime;
     var download = new Image();
     download.onload = function () {
         endTime = (new Date()).getTime();
-        showResults();  
+        let speed = showResults(); 
+        callback(speed)
     }
     download.onerror = function (err, msg) {
         ShowProgressMessage("Invalid image, or error downloading");
@@ -45,22 +53,25 @@ function MeasureConnectionSpeed() {
         var speedBps = (bitsLoaded / duration).toFixed(2);
         var speedKbps = (speedBps / 1024).toFixed(2);
         var speedMbps = (speedKbps / 1024).toFixed(2);
+               
         ShowProgressMessage([
         "Your connection speed is:", 
         speedBps + " bps", 
         speedKbps + " kbps", 
         speedMbps + " Mbps"
         ]);
+        return speedBps
     }
-}
 
+}
 
 
 class Speedtest extends React.Component {
   
-        componentDidMount () {
+    componentDidMount () {
         if (window.addEventListener) {
-            window.addEventListener('load', InitiateSpeedDetection, false);
+            InitiateSpeedDetection(this.props.onTest);
+            
         } else if (window.attachEvent) {
             window.attachEvent('onload', InitiateSpeedDetection);
         }
@@ -70,7 +81,6 @@ class Speedtest extends React.Component {
         return(
             <h1 id="progress">JavaScript Speed Test</h1>
             )
-        
     }
 }
 
